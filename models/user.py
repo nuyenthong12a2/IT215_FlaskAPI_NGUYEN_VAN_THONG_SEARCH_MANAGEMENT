@@ -1,5 +1,6 @@
-from datetime import datetime
 from sqlalchemy import Column, Integer, String, Boolean, DateTime
+from sqlalchemy.sql import func  # Import func từ sqlalchemy
+from sqlalchemy.orm import relationship
 from db.database import Base
 
 class User(Base):
@@ -11,4 +12,9 @@ class User(Base):
     full_name = Column(String(255), nullable=False)
     role = Column(String(50), default="USER", nullable=False)
     is_active = Column(Boolean, default=True, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    created_at = Column(DateTime, default=func.now(), nullable=False)
+    
+    # Mối quan hệ user với project 
+    owned_projects = relationship("ResearchProject", back_populates="owner", foreign_keys="[ResearchProject.owner_id]")
+    project_memberships = relationship("ResearchMember", back_populates="user")
+    assigned_tasks = relationship("ResearchTask", back_populates="assignee")

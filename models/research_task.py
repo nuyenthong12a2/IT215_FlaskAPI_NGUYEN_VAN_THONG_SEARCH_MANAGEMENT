@@ -1,5 +1,6 @@
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey
+from sqlalchemy.orm import relationship
 from db.database import Base
 
 class ResearchTask(Base):
@@ -14,3 +15,7 @@ class ResearchTask(Base):
     priority = Column(String(50), default="MEDIUM", nullable=False)
     due_date = Column(DateTime, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+
+    # Khai báo các mối quan hệ
+    project = relationship("ResearchProject", back_populates="tasks")
+    assignee = relationship("User", back_populates="assigned_tasks")

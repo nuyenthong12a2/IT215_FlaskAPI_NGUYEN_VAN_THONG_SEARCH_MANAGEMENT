@@ -8,7 +8,7 @@ import models.research_project
 import models.research_task
 
 Base.metadata.create_all(bind=engine)
-app = FastAPI(title="Research Group Management API")
+app = FastAPI(title="Research Group Management API") 
 
 
 @app.exception_handler(HTTPException)
