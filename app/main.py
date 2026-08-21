@@ -6,6 +6,7 @@ from db.database import engine, get_db, Base
 import models.user
 import models.research_project
 import models.research_task
+from routers import auth,users
 
 Base.metadata.create_all(bind=engine)
 app = FastAPI(title="Research Group Management API") 
@@ -45,7 +46,12 @@ async def global_exception_handler(request: Request, exc: Exception):
         },
     )
 
+# Đăng ký router 
+app.include_router(auth.router)
+app.include_router(users.router)
+
 
 @app.get("/health", tags=["Core"])
 def healthy_check():
     return {"status": "OK", "code": 200, "message": "API hoạt động bình thường "}
+

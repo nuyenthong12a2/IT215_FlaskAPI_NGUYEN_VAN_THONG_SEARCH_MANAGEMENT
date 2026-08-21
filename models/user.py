@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime,timezone
 from sqlalchemy import Column, Integer, String, Boolean, DateTime
 from sqlalchemy.orm import relationship
 from db.database import Base
@@ -13,9 +13,9 @@ class User(Base):
     full_name = Column(String(255), nullable=False)
     role = Column(String(50), default="USER", nullable=False)
     is_active = Column(Boolean, default=True, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    created_at = Column(DateTime, default=lambda:datetime.now(timezone.utc), nullable=False)
  
-    # 1 user có thể là owner của nhiều project (User.id <- ResearchProject.owner_id)
+    # 1 user có thể là owner của nhiều project 
     owned_projects = relationship(
         "ResearchProject",
         back_populates="owner",

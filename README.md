@@ -72,3 +72,17 @@ Giờ :18:30(PM)
 Exception handler cơ bản (404/400/403) + healthcheck endpoin 
 
 
+# Buổi 2 
+Ngày bắt đầu : 21/8/2026 
+Giờ : 12:45(PM)
+
+
+Đã hoàn thành xong : 
++ Post/auth/register 
++ Hash password bằng bcrypt/passlib 
++ Post/auth/login trả JWT access token 
+OAuth2PasswordBearer + get_current_user 
++ Role guard user/admin (require_admin)
++ Get/users/me,get/users(admin,search +filter is_active)
++ Xử lý lỗi token hết hạn/sai -> trả về 401,tài khoản không hoạt động 403
+

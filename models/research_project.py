@@ -1,13 +1,5 @@
 from datetime import datetime, timezone
-from sqlalchemy import (
-    Column,
-    Integer,
-    String,
-    Text,
-    DateTime,
-    ForeignKey,
-    UniqueConstraint,
-)
+from sqlalchemy import ( Column, Integer, String, Text,DateTime,ForeignKey,UniqueConstraint)
 from sqlalchemy.orm import relationship
 from db.database import Base
 
@@ -25,7 +17,7 @@ class ResearchProject(Base):
     owner = relationship(
         "User", back_populates="owned_projects", foreign_keys=[owner_id]
     )
-    members = relationship("ResearchMember", back__populates="project")
+    members = relationship("ResearchMember", back_populates="project")
     tasks = relationship("ResearchTask", back_populates="project")
 
 
