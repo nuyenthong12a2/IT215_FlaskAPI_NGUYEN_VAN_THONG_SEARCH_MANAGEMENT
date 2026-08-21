@@ -20,11 +20,13 @@ class UserUpdate(BaseModel):
         from_attributes = True
 
 
-class UserResponse(UserBase):
-    id: int
-    role: str
-    is_active: bool
-    created_at: datetime
 
+class UserResponse(BaseModel):
+    id:int 
+    email:EmailStr
+    full_name:str
+    role:str 
+    is_active:bool
+    created_at:datetime 
     class Config:
         from_attributes = True
