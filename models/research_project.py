@@ -14,9 +14,7 @@ class ResearchProject(Base):
         DateTime, default=lambda: datetime.now(timezone.utc), nullable=False
     )
 
-    owner = relationship(
-        "User", back_populates="owned_projects", foreign_keys=[owner_id]
-    )
+    owner = relationship("User", back_populates="owned_projects", foreign_keys=[owner_id] )
     members = relationship("ResearchMember", back_populates="project")
     tasks = relationship("ResearchTask", back_populates="project")
 

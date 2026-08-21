@@ -23,14 +23,8 @@ class User(Base):
     )
  
     # 1 user có thể tham gia nhiều project qua bảng trung gian research_members
-    project_memberships = relationship(
-        "ResearchMember",
-        back_populates="user",
-    )
+    project_memberships = relationship( "ResearchMember", back_populates="user")
  
     # 1 user có thể được giao nhiều task (User.id <- ResearchTask.assignee_id)
-    assigned_tasks = relationship(
-        "ResearchTask",
-        back_populates="assignee",
-    )
+    assigned_tasks = relationship( "ResearchTask", back_populates="assignee" )
  
