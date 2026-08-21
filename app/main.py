@@ -20,7 +20,7 @@ def http_exception_handler(request: Request, exc: HTTPException):
     )
 
 
-# Validate dữ liệu đầu vào (default = 422)
+# Validate dữ liệu đầu vào 
 @app.exception_handler(RequestValidationError)
 def validation_exception_handler(request: Request, exc: RequestValidationError):
     return JSONResponse(
