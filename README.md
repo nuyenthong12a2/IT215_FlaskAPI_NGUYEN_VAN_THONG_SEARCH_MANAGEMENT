@@ -86,3 +86,23 @@ OAuth2PasswordBearer + get_current_user
 + Get/users/me,get/users(admin,search +filter is_active)
 + Xử lý lỗi token hết hạn/sai -> trả về 401,tài khoản không hoạt động 403
 
+# Buổi 3 
+Ngày bắt đầu : 22/08/2025 
+Giờ : 12:45 AM 
+
+Đã Hoàn Thành : 
+- [x] POST /research-projects (tự động owner = OWNER)
+  - [x] GET /research-projects (chỉ trả project user thuộc về, search theo tên)
+  - [x] GET /research-projects/{id} (chỉ thành viên đề tài mới được xem)
+  - [x] PUT/PATCH/DELETE đề tài; chỉ OWNER được sửa/xóa
+  - [x] Thêm/xóa/danh sách member (không cho trùng, không xóa owner cuối)
+  - [x] Validate dữ liệu đề tài
+- **Vấn đề gặp phải / cách xử lý:**
+  - Dùng nhầm `FastAPI()` thay vì `APIRouter()` khi khởi tạo router
+  - Gõ nhầm `@router.path()` thay vì `.patch()`, thiếu dấu `/` đầu path ở route xóa
+  - Logic đảo ngược `if member.role == "OWNER"` thay vì `!=` khi check quyền sửa
+  - Sai cú pháp `ResearchMember.filter()` thay vì `db.query(ResearchMember).filter()`
+  - Sai thụt lề khiến điều kiện chặn xóa OWNER cuối nằm ngoài khối kiểm tra, gây NameError
+  - Dán nhầm code schema (`class ProjectBase(BaseModel)`) xuống cuối file router
+  - Swagger UI không cập nhật nhóm route mới do cache trình duyệt — xác nhận bằng `python -c "from app.main import app; print(list(app.openapi()['paths'].keys()))"` để kiểm tra route thực tế đã đăng ký đúng trước khi kết luận
+

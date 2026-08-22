@@ -1,5 +1,4 @@
 from typing import List, Optional
-
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy import or_
 from sqlalchemy.orm import Session
@@ -28,9 +27,7 @@ def list_users(
 
     if search:
         like_pattern = f"%{search}%"
-        query = query.filter(
-            or_(User.email.ilike(like_pattern), User.full_name.ilike(like_pattern))
-        )
+        query = query.filter(or_(User.email.ilike(like_pattern), User.full_name.ilike(like_pattern)))
 
     if is_active is not None:
         query = query.filter(User.is_active == is_active)
