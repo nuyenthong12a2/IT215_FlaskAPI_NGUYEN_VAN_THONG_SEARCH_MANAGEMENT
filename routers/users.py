@@ -11,12 +11,12 @@ from dependencies.auth import get_current_user, require_admin
 router = APIRouter(prefix="/users", tags=["Users"])
 
 
-@router.get("/me", response_model=UserResponse)
+@router.get("/me", response_model=UserResponse,summary="Lấy thông tin tài khoản hiện tại",description="Trả thông tin của chính user đang gọi API")
 def read_current_user(current_user: User = Depends(get_current_user)):
     return current_user
 
 
-@router.get("", response_model=List[UserResponse])
+@router.get("",response_model=List[UserResponse],summary="Lấy danh sách người dùng (chỉ Admin)",description="Chỉ tài khoản role=ADMIN mới gọi được. Hỗ trợ tìm kiếm theo email/họ tên và lọc theo is_active.",)
 def list_users(
     search: Optional[str] = Query(None, description="Tìm theo email hoặc họ tên"),
     is_active: Optional[bool] = Query(None, description="Lọc theo trạng thái tài khoản"),
