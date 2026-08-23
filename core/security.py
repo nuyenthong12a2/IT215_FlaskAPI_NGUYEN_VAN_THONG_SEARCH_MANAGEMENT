@@ -1,4 +1,3 @@
-# Nhiệm vụ : Xử lý mật khẩu và JWT . 
 from datetime import datetime , timedelta,timezone 
 from typing import Optional 
 
@@ -6,8 +5,6 @@ from jose import jwt
 from passlib.context import CryptContext 
 from core.config import settings
 
-# CryptContext quản lý thuật toán hash 
-# auto : tự nhận mật khẩu cũ sau này đổi thuật toán , vẫn verify được 
 pwd_context = CryptContext(schemes=["bcrypt"],deprecated="auto")
 
 def hash_password(plain_password:str)->str:
