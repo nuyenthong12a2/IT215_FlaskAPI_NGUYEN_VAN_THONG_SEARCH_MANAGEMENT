@@ -1,36 +1,31 @@
-from datetime import datetime
 from typing import Optional
-from pydantic import BaseModel
+from datetime import datetime
+from pydantic import BaseModel, Field
 
-
-class TaskBase(BaseModel):
-    title: str
+class TaskCreate(BaseModel):
+    title: str = Field(..., min_length=1, max_length=255)
     description: Optional[str] = None
-    priority: str = "MEDIUM"
-    status: str = "TODO"
-    due_date: Optional[datetime] = None
-
-
-class TaskCreate(TaskBase):
-    assignee_id: Optional[int] = None
-
-
-class TaskResponse(TaskBase):
-    id: int
-    project_id: int
-    assignee_id: Optional[int]
-    created_at: datetime
-
-    class Config:
-        from_attributes = True
-
+    status: Optional[str] = "TODO"  # TODO, IN_PROGRESS, DONE
+    priority: Optional[str] = "MEDIUM"  # LOW, MEDIUM, HIGH
+    assignee_id: Optional[int] = Field(None, gt=0)
 
 class TaskUpdate(BaseModel):
-    title: Optional[str] = None
+    title: Optional[str] = Field(None, min_length=1, max_length=255)
     description: Optional[str] = None
+    status: Optional[str] = None
     priority: Optional[str] = None
-    due_date: Optional[datetime] = None
+    assignee_id: Optional[int] = Field(None, gt=0)
+
+class TaskResponse(BaseModel):
+    id: int
+    project_id: int
+    title: str
+    description: Optional[str] = None
+    status: str
+    priority: str
     assignee_id: Optional[int] = None
+    created_at: datetime
+    updated_at: Optional[datetime] = None
 
     class Config:
         from_attributes = True
