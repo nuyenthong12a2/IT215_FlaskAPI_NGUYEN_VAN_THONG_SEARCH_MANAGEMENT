@@ -9,11 +9,9 @@ class UserBase(BaseModel):
     full_name: str
 
     @field_validator("email")
-    def validate_riki_email(cls, v: str) -> str:
+    def validate_email(cls, v: str) -> str:
         if not v.endswith("@gmail.com"):
-            raise ValueError(
-                "Email phải có dạng địa chỉ là @gmail.com"
-            )
+            raise ValueError("Email phải có dạng địa chỉ là @gmail.com")
         return v
 
     @field_validator("full_name")

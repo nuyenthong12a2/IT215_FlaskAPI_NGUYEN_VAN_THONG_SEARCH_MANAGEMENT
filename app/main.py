@@ -49,7 +49,7 @@ async def global_exception_handler(request: Request, exc: Exception):
 # Đăng ký router 
 app.include_router(auth.router)
 app.include_router(users.router)
-app.include_router(research_project.router)
+#app.include_router(research_project.router)
 
 
 
