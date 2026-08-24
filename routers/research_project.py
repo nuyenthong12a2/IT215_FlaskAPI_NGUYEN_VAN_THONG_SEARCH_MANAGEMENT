@@ -14,6 +14,11 @@ router = APIRouter(prefix="/research-projects", tags=["Research Projects"])
 
 @router.post("",response_model=ProjectResponse,status_code=status.HTTP_201_CREATED,summary="Tạo đề tài nghiên cứu mới",description="Người tạo tự động trở thành OWNER của đề tài.")
 def create_project(project_in: ProjectCreate,db: Session = Depends(get_db),current_user: User = Depends(get_current_user)):
+    # Check trùng tên đề tài của chính user 
+    existing_project = db.query(ResearchProject).join(ResearchMember,ResearchMember.project_id == ResearchProject.id).filter(ResearchMember.user_id == current_user.id,ResearchMember.role=="OWNER",ResearchProject.name== project_in.name).first()
+    if existing_project:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,detail=f"Bạn đã sở hữu một đề tài nghiên cứu có tên này rồi ")
+    
     new_project = ResearchProject(
         name=project_in.name,
         description=project_in.description,
@@ -75,6 +80,11 @@ def update_project( project_id: int, project_update: ProjectUpdate, db: Session 
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Chỉ OWNER được sửa đề tài")
 
     update_data = project_update.model_dump(exclude_unset=True)
+    if "name" in update_data and update_data["name"]!=project.name:
+        existing_name = db.query(ResearchProject).join(ResearchMember,ResearchMember.project_id == ResearchProject.id).filter(ResearchMember.user_id == current_user.id,ResearchMember.role =="OWNER",ResearchProject.name == update_data["name"],ResearchProject.id!=project_id).first()
+        if existing_name:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,detail=f"Đã có đề tài khác mang tên này rồi !")
+    
     for field, value in update_data.items():
         setattr(project, field, value)
 
@@ -112,10 +122,16 @@ def add_member( project_id: int, user_id: int, db: Session = Depends(get_db), cu
     current_member = get_member_or_403(db, project_id, current_user.id)
     if current_member.role != "OWNER":
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Chỉ OWNER được thêm thành viên")
+    
+    if user_id == current_user.id:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
 
     target_user = db.query(User).filter(User.id == user_id).first()
     if not target_user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Không tìm thấy User")
+    if not target_user.is_active:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,detail="Tài khoản này đang bị khóa , không thể thêm vào đề tài")
+    
 
     existing = (db.query(ResearchMember).filter(ResearchMember.project_id == project_id, ResearchMember.user_id == user_id).first()
     )

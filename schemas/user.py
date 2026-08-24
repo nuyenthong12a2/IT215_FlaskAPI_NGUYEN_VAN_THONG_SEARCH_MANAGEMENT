@@ -6,13 +6,14 @@ from pydantic import BaseModel, EmailStr, field_validator
 
 class UserBase(BaseModel):
     email: EmailStr
-    full_name: str
-
+    full_name: str 
+# Tối ưu lại   
     @field_validator("email")
     def validate_email(cls, v: str) -> str:
         if not v.endswith("@gmail.com"):
             raise ValueError("Email phải có dạng địa chỉ là @gmail.com")
-        return v
+        return v 
+
 
     @field_validator("full_name")
     def format_full_name(cls, v: str) -> str:
@@ -39,7 +40,7 @@ class UserCreate(UserBase):
 
 class UserUpdate(BaseModel):
     full_name: Optional[str] = None
-    is_active: Optional[bool] = None
+    is_active: Optional[bool] = None 
 
     @field_validator("full_name")
     def format_full_name(cls, v: Optional[str]) -> Optional[str]:
