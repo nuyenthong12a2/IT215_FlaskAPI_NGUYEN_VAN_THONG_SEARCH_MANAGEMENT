@@ -106,3 +106,35 @@ Giờ : 12:45 AM
   - Dán nhầm code schema (`class ProjectBase(BaseModel)`) xuống cuối file router
   - Swagger UI không cập nhật nhóm route mới do cache trình duyệt — xác nhận bằng `python -c "from app.main import app; print(list(app.openapi()['paths'].keys()))"` để kiểm tra route thực tế đã đăng ký đúng trước khi kết luận
 
+# Buổi 4 : 
+Ngày 25/8/2026
+Giờ : 10:55 PM 
+Quản lý Nhiệm vụ Nghiên cứu (Research Tasks)
+* **Tạo nhiệm vụ mới (`POST`):** Cho phép thành viên trong đề tài thêm mới task với các mức độ ưu tiên (`LOW`, `MEDIUM`, `HIGH`) và trạng thái (`TODO`, `IN_PROGRESS`, `DONE`).
+* **Lấy danh sách & Lọc (`GET`):** Hỗ trợ phân trang (`skip`, `limit`), tìm kiếm theo tiêu đề, và lọc linh hoạt theo `status`, `priority`, hoặc `assignee_id`.
+* **Xem chi tiết nhiệm vụ (`GET /{task_id}`):** Truy xuất thông tin cụ thể của một task, kèm kiểm tra quyền thành viên trong đề tài.
+* **Cập nhật nhiệm vụ (`PATCH /{task_id}`):** Cho phép cập nhật linh hoạt các trường thông tin của task (tiêu đề, trạng thái, độ ưu tiên...).
+* **Xóa nhiệm vụ (`DELETE /{task_id}`):** Xóa bỏ nhiệm vụ không còn cần thiết một cách an toàn.
+
+Buổi 5 : Quản lý Tài liệu Đề tài & Kiến trúc Dịch vụ (Research Documents & Services)
+* Xây dựng tầng **Service (`services/file_service.py`)** để cô lập logic xử lý file.
+  * **Siết chặt bảo mật:** Kiểm tra nghiêm ngặt phần mở rộng file (chỉ chấp nhận `.pdf`, `.docx`, `.xlsx`, `.txt`, `.zip`, `.doc`, `.rar`, `.csv`).
+  * **Chống trùng lặp:** Tự động đổi tên tệp sử dụng mã định danh `UUID` kết hợp `project_id` trước khi lưu trữ vật lý vào thư mục `uploads/documents/`.
+* **Xem danh sách tài liệu (`GET`):** Quản lý và truy xuất danh sách tài liệu thuộc đề tài.
+* **Xóa tài liệu (`DELETE`):** Xóa sạch thông tin metadata trong Database đồng thời dọn dẹp file vật lý trên ổ cứng server.
+
+II. Cấu trúc thư mục và siết chặt bảo mật 
+Dự án tuân thủ mô hình phân tầng chuẩn mực để đảm bảo tính bảo mật và dễ bảo trì:
+* **`routers/`**: Chứa các API endpoints chính (xử lý request và response).
+* **`services/`**: Cô lập logic nghiệp vụ phức tạp (ví dụ: `file_service.py` xử lý kiểm tra và lưu trữ file an toàn).
+* **`schemas/`**: Sử dụng **Pydantic** để validate chặt chẽ dữ liệu đầu vào, chặn các giá trị không hợp lệ (lỗi `422 Unprocessable Entity`).
+* **`tests/`**: Chứa các kịch bản kiểm thử tự động (`pytest`) chuẩn bị sẵn sàng cho việc kiểm tra chất lượng phần mềm.
+
+III. Trạng thái hiện tại & Kế hoạch tiếp theo 
+* **Trạng thái:** Toàn bộ mã nguồn, cấu trúc service và kịch bản test (`tests/test_py.py`) đã được hoàn thiện, viết gọn gàng và siết chặt bảo mật.
+* **Kế hoạch tiếp theo (Sáng mai):** 
+  1. Tiến hành chạy bộ kiểm thử (`pytest`) để kiểm tra tổng thể các kịch bản chặn lỗi (Validate, File Upload, Phân quyền).
+  2. Hoàn tất kiểm thử thực tế trên Swagger UI.
+  3. Thực hiện lệnh `git push` chính thức lên kho lưu trữ GitHub.
+
+

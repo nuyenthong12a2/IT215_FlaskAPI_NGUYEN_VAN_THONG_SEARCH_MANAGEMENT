@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 from db.database import get_db
 from models.user import User
 from schemas.user import UserCreate, UserResponse
-from schemas.token import Token
+from schemas.token_schema import Token
 from core.security import hash_password, verify_password, create_access_token
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
