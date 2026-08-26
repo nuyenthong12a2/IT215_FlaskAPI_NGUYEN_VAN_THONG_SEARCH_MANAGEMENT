@@ -22,7 +22,7 @@ def create_access_token(subject:str,expires_delta:Optional[timedelta]=None)->str
     """
     Tạo jwt create token 
     sub : user.id -> ép user.id nằm trong payload
-    expires_delta : Cho phép thời gian mặc định nếu cần (refresh token dùng thời gian dài)
+    expires_delta : Cho phép thời gian mặc định nếu cần 
     """    
     if expires_delta : 
         expire = datetime.now(timezone.utc) + expires_delta 

@@ -7,7 +7,7 @@ from pydantic import BaseModel, EmailStr, field_validator
 class UserBase(BaseModel):
     email: EmailStr
     full_name: str 
-# Tối ưu lại   
+  
     @field_validator("email")
     def validate_email(cls, v: str) -> str:
         if not v.endswith("@gmail.com"):

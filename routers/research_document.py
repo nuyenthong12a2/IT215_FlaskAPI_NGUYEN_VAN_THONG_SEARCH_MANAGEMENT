@@ -39,14 +39,13 @@ def verify_project_membership(db: Session, project_id: int, user_id: int) -> Res
     return member
 
 
-@router.post("", response_model=DocumentResponse, status_code=status.HTTP_201_CREATED, summary="Upload tài liệu (Siết chặt validate)")
+@router.post("", response_model=DocumentResponse, status_code=status.HTTP_201_CREATED, summary="Upload tài liệu ")
 async def upload_document(
     project_id: int = Path(..., gt=0),
     file: UploadFile = File(..., description="File tài liệu cần upload"),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    # Kiểm tra quyền thành viên đề tài
     verify_project_membership(db, project_id, current_user.id)
 
     if not file.filename:
@@ -87,8 +86,8 @@ async def upload_document(
     # Lưu thông tin vào Database
     new_doc = ResearchDocument(
         project_id=project_id,
-        file_name=file.filename,  # Lưu tên gốc để hiển thị
-        file_path=file_path,      # Lưu đường dẫn hệ thống
+        file_name=file.filename,  
+        file_path=file_path,     
         uploaded_by=current_user.id,
     )
     db.add(new_doc)

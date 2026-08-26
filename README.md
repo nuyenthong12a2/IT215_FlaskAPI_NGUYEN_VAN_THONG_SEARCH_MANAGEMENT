@@ -137,4 +137,16 @@ III. Trạng thái hiện tại & Kế hoạch tiếp theo
   2. Hoàn tất kiểm thử thực tế trên Swagger UI.
   3. Thực hiện lệnh `git push` chính thức lên kho lưu trữ GitHub.
 
+## 🧪 Hướng dẫn Kiểm thử Tự động (Automated Testing)
 
+Dự án đã được tích hợp bộ test tự động toàn diện từ Tiết 1 đến Tiết 5 (kiểm tra từ khởi động, CSDL, Auth, Đề tài, Nhiệm vụ cho đến xử lý ngoại lệ). 
+
+### 1. Điều kiện tiên quyết
+- Đã kích hoạt môi trường ảo (`venv`).
+- Đã cấu hình file `.env` kết nối Database MySQL thực tế.
+
+### 2. Câu lệnh chạy Test
+Mở Terminal tại thư mục gốc của project và chạy lệnh sau:
+
+```bash
+python -m pytest tests/test.py -v
