@@ -46,7 +46,7 @@ class TaskUpdate(BaseModel):
         return v
 
 
-# Đảm bảo có mặt class TaskResponse này để Router gọi import
+
 class TaskResponse(BaseModel):
     id: int
     project_id: int

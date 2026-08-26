@@ -1,7 +1,4 @@
-"""
-FILE: routers/research_document.py
-VAI TRÒ: Quản lý tài liệu/file đính kèm của đề tài - Siết chặt validate định dạng, dung lượng và phân quyền.
-"""
+
 import os
 import uuid
 import shutil
@@ -21,10 +18,10 @@ router = APIRouter(prefix="/research-projects/{project_id}/documents", tags=["Re
 UPLOAD_DIR = "uploads/documents"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
-# SIẾT CHẶT 1: Chỉ cho phép các định dạng tài liệu học tập/nghiên cứu thực sự cần thiết
+# STEP1: Chỉ cho phép các định dạng tài liệu học tập/nghiên cứu thực sự cần thiết
 ALLOWED_EXTENSIONS = {".pdf", ".docx", ".doc", ".txt", ".xlsx", ".csv", ".zip", ".rar"}
 
-# SIẾT CHẶT 2: Giới hạn dung lượng tối đa mỗi file là 5MB (tránh phình to Database và ổ cứng)
+# SIẾT CHẶT 2: Giới hạn dung lượng tối đa mỗi file là 5MB 
 MAX_FILE_SIZE = 5 * 1024 * 1024  
 
 

@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime
 from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from db.database import Base
@@ -15,7 +15,9 @@ class ResearchTask(Base):
     status = Column(String(50), default="TODO", nullable=False)
     priority = Column(String(50), default="MEDIUM", nullable=False)
     due_date = Column(DateTime, nullable=True)
-    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
+    
+    # Không lambda, truyền thẳng datetime.now cực kỳ sạch sẽ
+    created_at = Column(DateTime, default=datetime.now, nullable=False)
  
     project = relationship("ResearchProject", back_populates="tasks")
     assignee = relationship("User", back_populates="assigned_tasks")
