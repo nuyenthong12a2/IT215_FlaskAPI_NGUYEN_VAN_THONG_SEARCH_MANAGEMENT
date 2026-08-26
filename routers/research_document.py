@@ -51,7 +51,7 @@ async def upload_document(
     if not file.filename:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Tên file không hợp lệ")
 
-    # SIẾT CHẶT 3: Kiểm tra phần mở rộng file (Extension validation)
+    # SIẾT CHẶT 3: Kiểm tra phần mở rộng file 
     ext = os.path.splitext(file.filename)[1].lower()
     if ext not in ALLOWED_EXTENSIONS:
         raise HTTPException(
@@ -72,7 +72,7 @@ async def upload_document(
             detail=f"Dung lượng file vượt quá giới hạn cho phép (Tối đa 5MB). File của bạn: {round(file_size / (1024*1024), 2)}MB"
         )
 
-    # Đặt tên file ngẫu nhiên trên server để tránh xung đột, trùng lặp ghi đè
+    #  Tránh xung đột, trùng lặp ghi đè
     unique_filename = f"proj_{project_id}_{uuid.uuid4()}{ext}"
     file_path = os.path.join(UPLOAD_DIR, unique_filename)
 
@@ -83,7 +83,7 @@ async def upload_document(
     except Exception:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Không thể lưu trữ tệp tin lên server")
 
-    # Lưu thông tin vào Database
+    # Lưu thông tin
     new_doc = ResearchDocument(
         project_id=project_id,
         file_name=file.filename,  

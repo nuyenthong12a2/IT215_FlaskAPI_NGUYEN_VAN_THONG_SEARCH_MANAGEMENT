@@ -1,22 +1,3 @@
-"""
-FILE: test.py
-VAI TRÒ: Automated test cho toàn bộ API, chạy từ Tiết 1 đến Tiết 5.
-
-CÁCH CHẠY:
-    Đặt file này ở THƯ MỤC GỐC project (ngang hàng với thư mục app/, venv/).
-    Kích hoạt venv, rồi chạy:
-        pytest test.py -v
-
-LƯU Ý QUAN TRỌNG:
-    - Test này gọi THẲNG vào app thật qua TestClient, dùng CHUNG database
-      MySQL thật đang cấu hình trong .env - mỗi lần chạy sẽ tạo dữ liệu
-      thật (user mới, project mới...). Email test được sinh ngẫu nhiên
-      bằng uuid mỗi lần chạy để tránh lỗi trùng email giữa các lần chạy.
-    - Các test được viết theo THỨ TỰ TRONG FILE (trên xuống dưới) vì nhiều
-      test phụ thuộc dữ liệu tạo ra từ test trước đó (vd cần có project_id
-      mới tạo được task) - pytest mặc định chạy test theo đúng thứ tự khai
-      báo trong file, không cần cài thêm plugin nào.
-"""
 
 import uuid
 import pytest
@@ -26,8 +7,7 @@ from app.main import app
 
 client = TestClient(app)
 
-# "state" dùng để LƯU LẠI dữ liệu tạo ra ở test trước, cho test sau dùng lại
-# (vd project_id tạo ở Tiết 3 được Tiết 4 dùng để tạo task bên trong).
+
 state = {}
 
 
@@ -36,9 +16,9 @@ def unique_email(prefix: str) -> str:
     return f"{prefix}_{uuid.uuid4().hex[:8]}@gmail.com"
 
 
-# ============================================================
-# TIẾT 1 — HEALTH CHECK (xác nhận app khởi động và kết nối DB thành công)
-# ============================================================
+
+# TIẾT 1 — HEALTH CHECK 
+
 
 class TestTiet1_KhoiTao:
     def test_health_check(self):
@@ -48,9 +28,9 @@ class TestTiet1_KhoiTao:
         assert body["status"] == "OK"
 
 
-# ============================================================
+
 # TIẾT 2 — AUTHENTICATION & AUTHORIZATION
-# ============================================================
+
 
 class TestTiet2_Auth:
     def test_01_register_success(self):
@@ -121,14 +101,14 @@ class TestTiet2_Auth:
         assert response.status_code == 401
 
     def test_08_list_users_forbidden_for_normal_user(self):
-        # user_a chỉ là role=USER thường, không phải ADMIN -> phải bị chặn 403
+        # user_a chỉ là role=USER thường, không phải ADMIN ->  403
         response = client.get("/users", headers=state["user_a_headers"])
         assert response.status_code == 403
 
 
-# ============================================================
+
 # TIẾT 3 — QUẢN LÝ ĐỀ TÀI NGHIÊN CỨU & THÀNH VIÊN
-# ============================================================
+
 
 class TestTiet3_ResearchProject:
     def test_01_create_project_success(self):
@@ -278,9 +258,9 @@ class TestTiet3_ResearchProject:
         assert response.status_code == 204
 
 
-# ============================================================
+
 # TIẾT 4 — QUẢN TRỊ NHIỆM VỤ NGHIÊN CỨU (TASKS)
-# ============================================================
+
 
 class TestTiet4_ResearchTask:
     def test_01_create_task_success(self):

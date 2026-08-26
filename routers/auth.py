@@ -1,6 +1,6 @@
 """
 FILE: routers/auth.py
-VAI TRÒ: 2 endpoint công khai (không cần token) - đăng ký và đăng nhập.
+đăng ký và đăng nhập.
 """
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm

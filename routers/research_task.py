@@ -30,9 +30,9 @@ def verify_project_membership(db: Session, project_id: int, user_id: int) -> Res
     return member
 
 
-# ============================================================
+#
 # 1. TẠO NHIỆM VỤ NGHIÊN CỨU
-# ============================================================
+
 @router.post( "",response_model=TaskResponse,status_code=status.HTTP_201_CREATED,summary="Tạo nhiệm vụ nghiên cứu mới")
 def create_task(task_in: TaskCreate, project_id: int = Path(..., gt=0),db: Session = Depends(get_db),current_user: User = Depends(get_current_user)):
     # Xác thực user phải thuộc đề tài mới được tạo task 
@@ -50,7 +50,7 @@ def create_task(task_in: TaskCreate, project_id: int = Path(..., gt=0),db: Sessi
     db.refresh(new_task)
     return new_task
 
-# 2. DANH SÁCH NHIỆM VỤ (Hỗ trợ Lọc, Tìm kiếm, Phân trang & Sắp xếp)
+# 2. DANH SÁCH NHIỆM VỤ (Lọc, Tìm kiếm, Phân trang & Sắp xếp)
 
 @router.get( "", response_model=List[TaskResponse], summary="Danh sách nhiệm vụ của đề tài")
 def list_tasks(project_id: int = Path(..., gt=0),status_filter: Optional[str] = Query(None, alias="status", description="Lọc theo trạng thái: TODO, IN_PROGRESS, DONE"),priority_filter: Optional[str] = Query(None, alias="priority", description="Lọc theo độ ưu tiên: LOW, MEDIUM, HIGH" ), assignee_id: Optional[int] = Query(None, description="Lọc theo ID người thực hiện"), search: Optional[str] = Query(None, max_length=255, description="Tìm kiếm theo tiêu đề task"),skip: int = Query(0, ge=0, description="Số lượng bản ghi bỏ qua (offset)"),limit: int = Query(10, ge=1, le=100, description="Số lượng bản ghi tối đa (limit)"),sort_by: str = Query("created_at", description="Sắp xếp theo trường: created_at hoặc due_date"),order: str = Query("desc", description="Thứ tự sắp xếp: asc hoặc desc"),db: Session = Depends(get_db),current_user: User = Depends(get_current_user)):

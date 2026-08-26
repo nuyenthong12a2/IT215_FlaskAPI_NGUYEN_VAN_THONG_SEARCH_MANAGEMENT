@@ -16,7 +16,7 @@ class ResearchTask(Base):
     priority = Column(String(50), default="MEDIUM", nullable=False)
     due_date = Column(DateTime, nullable=True)
     
-    # Không lambda, truyền thẳng datetime.now cực kỳ sạch sẽ
+  
     created_at = Column(DateTime, default=datetime.now, nullable=False)
  
     project = relationship("ResearchProject", back_populates="tasks")
